@@ -3,6 +3,12 @@
     <el-checkbox-group v-model="list" @change="handleChange">
       <el-checkbox-button v-for="item in items" :label="item" :key="item">{{item}}</el-checkbox-button>
     </el-checkbox-group>
+    <el-input
+      @change="handleChange"
+      type="textarea"
+      :rows="3"
+      v-model="notes">
+    </el-input>
   </div>
 </template>
 
@@ -15,16 +21,21 @@ export default {
     return {
       list: [],
       items: [],
+      notes: '',
     }
   },
   methods : {
-    handleChange (e) {
-      api.updateEvaluation(e)
+    handleChange () {
+      api.updateEvaluation({
+        items: this.list,
+        notes: this.notes,
+      })
     }
   },
   mounted () {
     api.getEvaluation().then(res => {
-      this.items = Object.keys(res.data)
+      this.items = Object.keys(res.data).filter(v => v != 'notes')
+      this.notes = res.data.notes
       for (let i in res.data)
         if (res.data[i])
           this.list[this.list.length] = i

@@ -10,9 +10,7 @@ export default {
   getEvaluation() {
     return http.get('evaluation')
   },
-  updateEvaluation(items) {
-    return http.post('evaluation', {
-      items: items
-    })
+  updateEvaluation(data) {
+    return http.post('evaluation', data)
   }
 }
